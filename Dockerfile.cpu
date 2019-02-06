@@ -1,0 +1,56 @@
+FROM ubuntu:16.04
+
+# Install dependencies
+RUN apt-get update
+RUN apt-get install -y \
+            bc \
+            build-essential \
+            cmake \
+            curl \
+            g++ \
+            gfortran \
+            git \
+            libffi-dev \
+            liblapack-dev \
+            pkg-config \
+            python3-dev \
+            python3-tk \
+            python3-numpy \
+            wget
+RUN apt-get clean
+RUN apt-get autoremove
+RUN rm -rf /var/lib/apt/lists/*
+
+# Install useful Python libraries
+RUN apt-get update
+RUN apt-get install -y \
+            python3-numpy \
+            python3-scipy \
+            python3-nose \
+            python3-pandas \
+            python3-sklearn
+RUN apt-get clean
+RUN apt-get autoremove
+RUN rm -rf /var/lib/apt/lists/*
+
+# Install pip
+RUN apt-get update
+RUN apt-get install -y python3-pip
+RUN pip3 install --upgrade pip
+RUN apt-get clean
+RUN apt-get autoremove
+RUN rm -rf /var/lib/apt/lists/*
+
+# Install other useful Python packages using pip
+RUN pip3 --no-cache-dir install \
+                        lasio==0.23\
+                        zmq
+
+# Install lightgbm from source
+RUN pip3 install --no-binary :all: lightgbm==2.2.3
+
+# Install xgboost
+RUN pip3 install xgboost==0.81
+
+CMD ["/bin/bash"]
+
