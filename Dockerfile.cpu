@@ -3,6 +3,7 @@ FROM ubuntu:16.04
 # Install dependencies
 RUN apt-get update
 RUN apt-get install -y \
+            apt-utils \
             bc \
             build-essential \
             cmake \
@@ -21,18 +22,6 @@ RUN apt-get clean
 RUN apt-get autoremove
 RUN rm -rf /var/lib/apt/lists/*
 
-# Install useful Python libraries
-RUN apt-get update
-RUN apt-get install -y \
-            python3-numpy \
-            python3-scipy \
-            python3-nose \
-            python3-pandas \
-            python3-sklearn
-RUN apt-get clean
-RUN apt-get autoremove
-RUN rm -rf /var/lib/apt/lists/*
-
 # Install pip
 RUN apt-get update
 RUN apt-get install -y python3-pip
@@ -43,14 +32,21 @@ RUN rm -rf /var/lib/apt/lists/*
 
 # Install other useful Python packages using pip
 RUN pip3 --no-cache-dir install \
-                        lasio==0.23\
+                        joblib==0.13.1 \
+                        lasio==0.23 \
+                        matplotlib \
+                        nose \
+                        numpy==1.16.1 \
+                        pyyaml \
+                        scikit-learn==0.20.2 \
+                        scipy==1.2.0 \
+                        xgboost==0.81 \
                         zmq
 
-# Install lightgbm from source
+# Install from source
 RUN pip3 install --no-binary :all: lightgbm==2.2.3
 
-# Install xgboost
-RUN pip3 install xgboost==0.81
+RUN apt-get autoremove
 
 CMD ["/bin/bash"]
 
