@@ -14,6 +14,7 @@ RUN apt-get install -y --no-install-recommends \
             gfortran \
             git \
             libffi-dev \
+            libgtk2.0-dev \ 
             liblapack-dev \
             pkg-config \
             wget
@@ -27,10 +28,19 @@ RUN chmod +x ~/miniconda.sh
 RUN ~/miniconda.sh -b -p /opt/conda
 RUN rm ~/miniconda.sh
 RUN /opt/conda/bin/conda install -y python=$PYTHON_VERSION numpy pyyaml scipy mkl mkl-include cython typing
-RUN /opt/conda/bin/conda install scikit-learn pandas nose
-RUN /opt/conda/bin/conda install pytorch torchvision cudatoolkit=10.0 -c pytorch
+RUN /opt/conda/bin/conda install scikit-learn nose pip coverage 
+RUN /opt/conda/bin/conda install pytorch torchvision cudatoolkit=10.1 -c pytorch
 RUN /opt/conda/bin/conda clean -ya
 
 ENV PATH /opt/conda/bin:$PATH
+
+RUN pip install --upgrade pip 
+RUN pip install pillow==6.1.0 
+RUN pip install segyio==1.9.0 
+RUN pip install scikit-image==0.15.10 
+RUN pip install click>=6.7,<7 
+RUN pip install tqdm==4.32.2 
+RUN pip install boto3==1.12.17 
+RUN pip install opencv-python-headless==4.1.0.25
 
 CMD ["/bin/bash"]
